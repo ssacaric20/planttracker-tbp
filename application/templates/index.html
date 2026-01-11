@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}PlantTracker - Pregled biljaka{% endblock %}
+
+{% block content %}
+<h2>📊 Pregled</h2>
+
+<div class="stats">
+    <div class="stat-card">
+        <h3>{{ stats.total_plants }}</h3>
+        <p>Ukupno biljaka</p>
+    </div>
+    <div class="stat-card">
+        <h3>{{ stats.healthy_plants }}</h3>
+        <p>Zdrave biljke</p>
+    </div>
+    <div class="stat-card">
+        <h3>{{ stats.overdue_reminders }}</h3>
+        <p>Dospjeli podsjetnici</p>
+    </div>
+    <div class="stat-card">
+        <h3>{{ stats.events_this_week }}</h3>
+        <p>Događaji ovaj tjedan</p>
+    </div>
+</div>
+
+{% if stats.overdue_reminders > 0 %}
+<div class="alert alert-warning">
+    ⚠️ Imate {{ stats.overdue_reminders }} dospjelih podsjetnika! <a href="/reminders">Pogledajte podsjetnika</a>
+</div>
+{% endif %}
+
+<h2>🌿 Moje biljke</h2>
+
+{% if plants %}
+<div class="plant-grid">
+    {% for plant in plants %}
+    <div class="plant-card" onclick="window.location.href='/plant/{{ plant.plant_id }}'">
+        <h3>{{ plant.common_name }}</h3>
+        {% if plant.scientific_name %}
+        <p><em>{{ plant.scientific_name }}</em></p>
+        {% endif %}
+        <span class="status {{ plant.status }}">{{ plant.status }}</span>
+        <p>📍 {{ plant.location or 'Nepoznato' }}</p>
+        <p>🕐 {{ plant.days_old }} dana stara</p>
+        {% if plant.next_reminder %}
+        <p>⏰ Sljedeći podsjetnik: {{ plant.next_reminder.strftime('%d.%m.%Y %H:%M') }}</p>
+        {% endif %}
+        {% if plant.needs_attention %}
+        <p style="color: #e74c3c;">⚠️ Treba pažnju!</p>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>Nemate još biljaka. Dodajte prvu biljku!</p>
+{% endif %}
+
+<div style="margin-top: 30px;">
+    <button class="btn" onclick="alert('Funkcionalnost za dodavanje biljke će biti implementirana kroz API')">
+        ➕ Dodaj novu biljku
+    </button>
+</div>
+{% endblock %}

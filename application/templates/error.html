@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Greška - PlantTracker{% endblock %}
+
+{% block content %}
+<div style="text-align: center; padding: 50px;">
+    <h2 style="color: #e74c3c;">❌ Ups! Nešto je pošlo po zlu</h2>
+    <p style="font-size: 1.2em; margin: 20px 0;">{{ error }}</p>
+    <a href="/" class="btn">🏠 Povratak na početnu</a>
+</div>
+{% endblock %}

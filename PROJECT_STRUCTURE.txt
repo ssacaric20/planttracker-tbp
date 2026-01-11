@@ -1,0 +1,98 @@
+PlantTracker
+KLJUČNE KOMPONENTE PROJEKTA
+
+1. BAZA PODATAKA (PostgreSQL)
+    7 glavnih tablica (plants, events, reminders, notifications, itd.)
+    6 okidača za aktivne baze podataka
+    9 funkcija i 2 stored procedure
+    3 view-a (pogleda)
+    GiST indeksi za temporalne upite
+    Temporalna tablica plant_status_history
+
+2. APLIKACIJA (Python Flask)
+    REST API endpoints (/api/plants, /api/event, itd.)
+    Web grafičko sučelje
+    Database wrapper sa context managerima
+    Error handling
+    Routing i templates
+
+TEHNOLOGIJE
+- Database: PostgreSQL 12+
+- Backend: Python 3.8+, Flask 3.0
+- Frontend: HTML, inline CSS
+
+ZNAČAJKE
+Aktivne baze podataka
+ECA (Event-Condition-Action) pravila
+Automatski trigger-i za:
+  - Ažuriranje updated_at polja
+  - Evidentiranje promjena statusa
+  - Generiranje notifikacija
+  - Ažuriranje podsjetnika
+  - Upozorenja na neobičnosti
+
+[Temporalne baze podataka]
+Valid time model
+Queries
+Povijesni trendovi
+Analiza promjena kroz vrijeme
+
+Web aplikacija
+Pregled svih biljaka
+Detalji i statistika po biljci
+Podsjetnici i notifikacije
+REST API za integracije
+Upload slika
+
+ZA INSTALACIJU
+1. Preuzimanje projekta:
+   git clone [repository-url]
+   cd plant-tracker
+
+2. Automatska instalacija:
+   chmod +x install.sh
+   ./install.sh
+
+3. Pokretanje aplikacije:
+   cd application
+   python app.py
+
+4. Otvaranje preglednika:
+   http://localhost:5000
+
+
+STRUKTURA BAZE PODATAKA
+Glavne tablice:
+- plants              (Osnovne informacije o biljkama)
+- plant_status_history (TEMPORALNA tablica - povijest statusa)
+- events              (Događaji: zalijevanje, gnojenje, ...)
+- reminders           (Podsjetnici s frekvencijom)
+- notifications       (Automatski generirane notifikacije)
+- growth_measurements (Mjerenja rasta kroz vrijeme)
+- images              (Putanje do slika)
+
+Triggers (Aktivne baze):
+- trigger_update_plant_timestamp
+- trigger_track_status_change
+- trigger_initialize_status
+- trigger_generate_notifications
+- trigger_update_reminder
+- trigger_check_watering
+
+Views:
+- overdue_reminders
+- current_plant_status
+- plant_event_stats
+
+API ENDPOINTS
+GET  /                    - Početna stranica
+GET  /plant/<id>          - Detalji biljke
+GET  /plant/<id>/history  - Temporalna povijest
+GET  /reminders           - Podsjetnici
+
+GET  /api/plants          - Sve biljke (JSON)
+POST /api/plant           - Dodaj biljku
+PUT  /api/plant/<id>      - Ažuriraj biljku
+POST /api/event           - Dodaj događaj (AKTIVIRA TRIGGER!)
+POST /api/reminder        - Dodaj podsjetnik
+POST /api/measurement     - Dodaj mjerenje rasta
