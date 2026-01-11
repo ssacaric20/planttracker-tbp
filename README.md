@@ -4,17 +4,17 @@ Aplikacija za praćenje i pomoć u održavanju rasta biljaka s podrškom za temp
 
 ## Značajke
 
-- **Upravljanje biljkama**: Evidencija biljaka s detaljnim informacijama
-- **Temporalno praćenje**: Praćenje povijesti rasta i promjena stanja kroz vrijeme
-- **Aktivni podsjetnici**: Automatski okidači za zalijevanje, gnojenje i druge aktivnosti
-- **Galerija slika**: Vizualno dokumentiranje rasta biljaka
-- **Analitika**: Statistike i trendovi rasta
+- **Upravljanje biljkama**: evidencija biljaka s detaljnim informacijama
+- **Temporalno praćenje**: praćenje povijesti rasta i promjena stanja kroz vrijeme
+- **Aktivni podsjetnici**: automatski okidači za zalijevanje, gnojenje i druge aktivnosti
+- **Galerija slika**: vizualno dokumentiranje rasta biljaka
+- **Analitika**: statistike i trendovi rasta
 
 ## Tehnologije
 
 - **Baza podataka**: PostgreSQL (aktivne i temporalne baze)
 - **Backend**: Python Flask
-- **Frontend**: HTML/CSS/JavaScript
+- **Frontend**: HTML, inline CSS
 - **Verzioniranje**: Git
 
 ## Instalacija
@@ -33,12 +33,12 @@ chmod +x install.sh
 
 ### Ručna instalacija
 
-1. Kreiraj PostgreSQL bazu podataka:
+1. Kreiranje PostgreSQL baze podataka:
 ```bash
 createdb planttracker
 ```
 
-2. Izvedi SQL skripte:
+2. SQL skripte:
 ```bash
 psql -d planttracker -f database/01_schema.sql
 psql -d planttracker -f database/02_triggers.sql
@@ -46,22 +46,22 @@ psql -d planttracker -f database/03_functions.sql
 psql -d planttracker -f database/04_sample_data.sql
 ```
 
-3. Instaliraj Python dependencies:
+3. Python dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-4. Pokreni aplikaciju:
+4. Pokretanje aplikacije:
 ```bash
 cd application
 python app.py
 ```
 
-5. Otvori preglednik na `http://localhost:5000`
+5. Preglednik na `http://localhost:5000`
 
 ## Dokumentacija
 
-Detaljnu dokumentaciju možeš naći u direktoriju `documentation/`.
+Detaljna dokumentacija u direktoriju `documentation/`.
 
 ## 📄 Licenca
 
