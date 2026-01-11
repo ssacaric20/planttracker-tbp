@@ -1,8 +1,8 @@
-# 🌱 PlantTracker - Aplikacija za praćenje rasta biljaka
+# PlantTracker - Aplikacija za praćenje rasta biljaka
 
 Aplikacija za praćenje i pomoć u održavanju rasta biljaka s podrškom za temporalno praćenje, automatske podsjetnika i vizualno dokumentiranje.
 
-## 📋 Značajke
+## Značajke
 
 - **Upravljanje biljkama**: Evidencija biljaka s detaljnim informacijama
 - **Temporalno praćenje**: Praćenje povijesti rasta i promjena stanja kroz vrijeme
@@ -10,14 +10,14 @@ Aplikacija za praćenje i pomoć u održavanju rasta biljaka s podrškom za temp
 - **Galerija slika**: Vizualno dokumentiranje rasta biljaka
 - **Analitika**: Statistike i trendovi rasta
 
-## 🛠️ Tehnologije
+## Tehnologije
 
 - **Baza podataka**: PostgreSQL (aktivne i temporalne baze)
 - **Backend**: Python Flask
 - **Frontend**: HTML/CSS/JavaScript
 - **Verzioniranje**: Git
 
-## 📦 Instalacija
+## Instalacija
 
 ### Preduvjeti
 - PostgreSQL 12+
@@ -59,7 +59,7 @@ python app.py
 
 5. Otvori preglednik na `http://localhost:5000`
 
-## 📚 Dokumentacija
+## Dokumentacija
 
 Detaljnu dokumentaciju možeš naći u direktoriju `documentation/`.
 
@@ -67,6 +67,6 @@ Detaljnu dokumentaciju možeš naći u direktoriju `documentation/`.
 
 GNU General Public License v3.0
 
-## 👤 Sandra Sačarić
+## Sandra Sačarić
 
-Projekt izrađen za kolegij Teorija Baza Podatak
+Projekt izrađen za kolegij Teorija Baza Podataka
