@@ -8,19 +8,19 @@
 <div class="stats">
     <div class="stat-card">
         <h3>{{ stats.total_plants }}</h3>
-        <p>Ukupno biljaka</p>
+        <p class="data">Ukupno biljaka</p>
     </div>
     <div class="stat-card">
         <h3>{{ stats.healthy_plants }}</h3>
-        <p>Zdrave biljke</p>
+        <p class="data">Zdrave biljke</p>
     </div>
     <div class="stat-card">
         <h3>{{ stats.overdue_reminders }}</h3>
-        <p>Dospjeli podsjetnici</p>
+        <p class="data">Dospjeli podsjetnici</p>
     </div>
     <div class="stat-card">
         <h3>{{ stats.events_this_week }}</h3>
-        <p>Događaji ovaj tjedan</p>
+        <p class="data">Događaji ovaj tjedan</p>
     </div>
 </div>
 
@@ -58,7 +58,7 @@
 
 <div style="margin-top: 30px;">
     <button class="btn" onclick="alert('Funkcionalnost za dodavanje biljke će biti implementirana kroz API')">
-        ➕ Dodaj novu biljku
+        Dodaj novu biljku
     </button>
 </div>
 {% endblock %}
