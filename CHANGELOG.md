@@ -2,8 +2,6 @@
 
 Sve značajne promjene u projektu PlantTracker bit će dokumentirane u ovoj datoteci.
 
-## [1.0.0] - 2024-12-21
-
 ### Dodano
 - Inicijalna verzija PlantTracker aplikacije
 - PostgreSQL baza podataka s aktivnim i temporalnim značajkama
