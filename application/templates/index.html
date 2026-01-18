@@ -3,7 +3,7 @@
 {% block title %}PlantTracker - Pregled biljaka{% endblock %}
 
 {% block content %}
-<h2>📊 Pregled</h2>
+<h2>Pregled</h2>
 
 <div class="stats">
     <div class="stat-card">
@@ -26,11 +26,11 @@
 
 {% if stats.overdue_reminders > 0 %}
 <div class="alert alert-warning">
-    ⚠️ Imate {{ stats.overdue_reminders }} dospjelih podsjetnika! <a href="/reminders">Pogledajte podsjetnika</a>
+    Imate {{ stats.overdue_reminders }} dospjelih podsjetnika! <a href="/reminders">Pogledajte podsjetnika</a>
 </div>
 {% endif %}
 
-<h2>🌿 Moje biljke</h2>
+<h2>Moje biljke</h2>
 
 {% if plants %}
 <div class="plant-grid">
@@ -41,13 +41,13 @@
         <p><em>{{ plant.scientific_name }}</em></p>
         {% endif %}
         <span class="status {{ plant.status }}">{{ plant.status }}</span>
-        <p>📍 {{ plant.location or 'Nepoznato' }}</p>
-        <p>🕐 {{ plant.days_old }} dana stara</p>
+        <p>{{ plant.location or 'Nepoznato' }}</p>
+        <p>{{ plant.days_old }} dana stara</p>
         {% if plant.next_reminder %}
-        <p>⏰ Sljedeći podsjetnik: {{ plant.next_reminder.strftime('%d.%m.%Y %H:%M') }}</p>
+        <p>Sljedeći podsjetnik: {{ plant.next_reminder.strftime('%d.%m.%Y %H:%M') }}</p>
         {% endif %}
         {% if plant.needs_attention %}
-        <p style="color: #e74c3c;">⚠️ Treba pažnju!</p>
+        <p style="color: #e74c3c;">Treba pažnju!</p>
         {% endif %}
     </div>
     {% endfor %}
@@ -57,8 +57,8 @@
 {% endif %}
 
 <div style="margin-top: 30px;">
-    <button class="btn" onclick="alert('Funkcionalnost za dodavanje biljke će biti implementirana kroz API')">
+    <a href="/plant/add" class="btn">
         Dodaj novu biljku
-    </button>
+    </a>
 </div>
 {% endblock %}

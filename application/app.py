@@ -29,6 +29,11 @@ def index():
     except Exception as e:
         return render_template('error.html', error=str(e)), 500
 
+@app.route('/plant/add')
+def add_plant_page():
+    """Stranica za dodavanje nove biljke"""
+    return render_template('add_plant.html')
+
 @app.route('/plant/<plant_id>')
 def plant_detail(plant_id):
     """Detaljna stranica pojedine biljke"""
