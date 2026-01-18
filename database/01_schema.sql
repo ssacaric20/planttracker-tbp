@@ -1,10 +1,9 @@
 -- ============================================
--- PlantTracker Database Schema
+-- PlantTracker db shema
 -- Aktivne i temporalne baze podataka
 -- ============================================
 
 -- Kreiranje ekstenzija
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE EXTENSION IF NOT EXISTS "btree_gist";
 
 -- ============================================
@@ -21,7 +20,7 @@ CREATE TYPE reminder_frequency AS ENUM ('dnevno', 'tjedno', 'dvotjedno', 'mjese�
 
 -- Tablica biljaka
 CREATE TABLE plants (
-    plant_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    plant_id SERIAL PRIMARY KEY,
     common_name VARCHAR(100) NOT NULL,
     scientific_name VARCHAR(150),
     variety VARCHAR(100),
@@ -37,7 +36,7 @@ CREATE TABLE plants (
 -- Temporalna tablica za povijest statusa biljaka
 CREATE TABLE plant_status_history (
     history_id SERIAL PRIMARY KEY,
-    plant_id UUID REFERENCES plants(plant_id) ON DELETE CASCADE,
+    plant_id INTEGER REFERENCES plants(plant_id) ON DELETE CASCADE,
     status plant_status NOT NULL,
     valid_from TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     valid_to TIMESTAMP DEFAULT NULL,
@@ -53,7 +52,7 @@ CREATE INDEX idx_status_history_temporal ON plant_status_history
 -- Tablica događaja
 CREATE TABLE events (
     event_id SERIAL PRIMARY KEY,
-    plant_id UUID REFERENCES plants(plant_id) ON DELETE CASCADE,
+    plant_id INTEGER REFERENCES plants(plant_id) ON DELETE CASCADE,
     event_type event_type NOT NULL,
     event_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     description TEXT,
@@ -69,7 +68,7 @@ CREATE INDEX idx_events_date ON events(event_date DESC);
 -- Tablica podsjetnika (aktivne baze - okidači)
 CREATE TABLE reminders (
     reminder_id SERIAL PRIMARY KEY,
-    plant_id UUID REFERENCES plants(plant_id) ON DELETE CASCADE,
+    plant_id INTEGER REFERENCES plants(plant_id) ON DELETE CASCADE,
     reminder_type event_type NOT NULL,
     frequency reminder_frequency NOT NULL,
     last_performed TIMESTAMP,
@@ -83,7 +82,7 @@ CREATE TABLE reminders (
 CREATE TABLE notifications (
     notification_id SERIAL PRIMARY KEY,
     reminder_id INTEGER REFERENCES reminders(reminder_id) ON DELETE CASCADE,
-    plant_id UUID REFERENCES plants(plant_id) ON DELETE CASCADE,
+    plant_id INTEGER REFERENCES plants(plant_id) ON DELETE CASCADE,
     message TEXT NOT NULL,
     is_read BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -95,7 +94,7 @@ CREATE INDEX idx_notifications_unread ON notifications(is_read, created_at);
 -- Tablica slika
 CREATE TABLE images (
     image_id SERIAL PRIMARY KEY,
-    plant_id UUID REFERENCES plants(plant_id) ON DELETE CASCADE,
+    plant_id INTEGER REFERENCES plants(plant_id) ON DELETE CASCADE,
     file_path VARCHAR(500) NOT NULL,
     caption TEXT,
     taken_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -107,7 +106,7 @@ CREATE INDEX idx_images_plant ON images(plant_id, taken_at DESC);
 -- Tablica mjerenja rasta (temporalni podaci)
 CREATE TABLE growth_measurements (
     measurement_id SERIAL PRIMARY KEY,
-    plant_id UUID REFERENCES plants(plant_id) ON DELETE CASCADE,
+    plant_id INTEGER REFERENCES plants(plant_id) ON DELETE CASCADE,
     height_cm DECIMAL(6,2),
     width_cm DECIMAL(6,2),
     leaf_count INTEGER,
@@ -119,10 +118,10 @@ CREATE TABLE growth_measurements (
 CREATE INDEX idx_measurements_plant_date ON growth_measurements(plant_id, measurement_date DESC);
 
 -- ============================================
--- VIEWS (Pogledi)
+-- VIEWS
 -- ============================================
 
--- Pogled aktivnih podsjetnika koji su dospiječi
+-- Pogled aktivnih podsjetnika koji su dospjeći
 CREATE VIEW overdue_reminders AS
 SELECT 
     r.reminder_id,

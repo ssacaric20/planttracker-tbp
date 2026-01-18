@@ -1,5 +1,5 @@
 -- ============================================
--- PlantTracker Database Functions
+-- PlantTracker db funkcije
 -- Napredne funkcije i stored procedure
 -- ============================================
 
@@ -9,7 +9,7 @@
 
 -- Funkcija za dohvaćanje statusa biljke u određenom vremenskom trenutku
 CREATE OR REPLACE FUNCTION get_plant_status_at(
-    p_plant_id UUID,
+    p_plant_id INTEGER,
     p_timestamp TIMESTAMP
 )
 RETURNS plant_status AS $$
@@ -30,7 +30,7 @@ $$ LANGUAGE plpgsql;
 
 -- Funkcija za dohvaćanje povijesti statusa biljke u određenom vremenskom razdoblju
 CREATE OR REPLACE FUNCTION get_status_history(
-    p_plant_id UUID,
+    p_plant_id INTEGER,
     p_from_date TIMESTAMP,
     p_to_date TIMESTAMP
 )
@@ -45,8 +45,8 @@ BEGIN
     SELECT 
         psh.status,
         psh.valid_from,
-        COALESCE(psh.valid_to, CURRENT_TIMESTAMP) AS valid_to,
-        COALESCE(psh.valid_to, CURRENT_TIMESTAMP) - psh.valid_from AS duration
+        COALESCE(psh.valid_to, CURRENT_TIMESTAMP::TIMESTAMP) AS valid_to,  -- Dodano ::TIMESTAMP
+        COALESCE(psh.valid_to, CURRENT_TIMESTAMP::TIMESTAMP) - psh.valid_from AS duration
     FROM plant_status_history psh
     WHERE psh.plant_id = p_plant_id
       AND psh.valid_from <= p_to_date
@@ -61,7 +61,7 @@ $$ LANGUAGE plpgsql;
 
 -- Funkcija za izračun prosječnog intervala između zalijevanja
 CREATE OR REPLACE FUNCTION calculate_avg_watering_interval(
-    p_plant_id UUID
+    p_plant_id INTEGER
 )
 RETURNS INTERVAL AS $$
 DECLARE
@@ -79,7 +79,7 @@ $$ LANGUAGE plpgsql;
 
 -- Funkcija za dohvaćanje statistike rasta biljke
 CREATE OR REPLACE FUNCTION get_growth_statistics(
-    p_plant_id UUID
+    p_plant_id INTEGER
 )
 RETURNS TABLE (
     total_measurements INTEGER,
@@ -105,7 +105,7 @@ $$ LANGUAGE plpgsql;
 
 -- Funkcija za dohvaćanje trenda rasta
 CREATE OR REPLACE FUNCTION get_growth_trend(
-    p_plant_id UUID,
+    p_plant_id INTEGER,
     p_days INTEGER DEFAULT 30
 )
 RETURNS TABLE (
@@ -134,7 +134,7 @@ $$ LANGUAGE plpgsql;
 
 -- Funkcija za generiranje izvještaja o aktivnostima biljke
 CREATE OR REPLACE FUNCTION generate_plant_report(
-    p_plant_id UUID
+    p_plant_id INTEGER
 )
 RETURNS TABLE (
     plant_name VARCHAR,
@@ -169,7 +169,7 @@ $$ LANGUAGE plpgsql;
 -- Funkcija za pregled svih biljaka s ključnim informacijama
 CREATE OR REPLACE FUNCTION get_plants_overview()
 RETURNS TABLE (
-    plant_id UUID,
+    plant_id INTEGER,
     common_name VARCHAR,
     scientific_name VARCHAR,
     status plant_status,
@@ -206,7 +206,7 @@ $$ LANGUAGE plpgsql;
 
 -- Procedura za kreiranje podsjetnika za zalijevanje s pametnim intervalom
 CREATE OR REPLACE PROCEDURE create_smart_watering_reminder(
-    p_plant_id UUID,
+    p_plant_id INTEGER,
     p_frequency reminder_frequency DEFAULT 'tjedno'
 )
 LANGUAGE plpgsql AS $$
@@ -277,12 +277,12 @@ $$;
 -- COMMENTS
 -- ============================================
 
-COMMENT ON FUNCTION get_plant_status_at(UUID, TIMESTAMP) IS 'Dohvaća status biljke u određenom vremenskom trenutku - temporalne baze';
-COMMENT ON FUNCTION get_status_history(UUID, TIMESTAMP, TIMESTAMP) IS 'Dohvaća potpunu povijest statusa biljke u vremenskom razdoblju';
-COMMENT ON FUNCTION calculate_avg_watering_interval(UUID) IS 'Izračunava prosječni interval između zalijevanja';
-COMMENT ON FUNCTION get_growth_statistics(UUID) IS 'Dohvaća statističke podatke o rastu biljke';
-COMMENT ON FUNCTION get_growth_trend(UUID, INTEGER) IS 'Analizira trend rasta biljke u zadnjih N dana';
-COMMENT ON FUNCTION generate_plant_report(UUID) IS 'Generira detaljni izvještaj o biljci';
+COMMENT ON FUNCTION get_plant_status_at(INTEGER, TIMESTAMP) IS 'Dohvaća status biljke u određenom vremenskom trenutku - temporalne baze';
+COMMENT ON FUNCTION get_status_history(INTEGER, TIMESTAMP, TIMESTAMP) IS 'Dohvaća potpunu povijest statusa biljke u vremenskom razdoblju';
+COMMENT ON FUNCTION calculate_avg_watering_interval(INTEGER) IS 'Izračunava prosječni interval između zalijevanja';
+COMMENT ON FUNCTION get_growth_statistics(INTEGER) IS 'Dohvaća statističke podatke o rastu biljke';
+COMMENT ON FUNCTION get_growth_trend(INTEGER, INTEGER) IS 'Analizira trend rasta biljke u zadnjih N dana';
+COMMENT ON FUNCTION generate_plant_report(INTEGER) IS 'Generira detaljni izvještaj o biljci';
 COMMENT ON FUNCTION get_plants_overview() IS 'Dohvaća pregled svih biljaka s ključnim informacijama';
-COMMENT ON PROCEDURE create_smart_watering_reminder(UUID, reminder_frequency) IS 'Kreira pametan podsjetnik za zalijevanje na temelju povijesti';
+COMMENT ON PROCEDURE create_smart_watering_reminder(INTEGER, reminder_frequency) IS 'Kreira pametan podsjetnik za zalijevanje na temelju povijesti';
 COMMENT ON PROCEDURE archive_old_data(INTEGER) IS 'Arhivira stare podatke za održavanje performansi';
